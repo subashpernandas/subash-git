@@ -1,0 +1,39 @@
+spring:
+  cloud:
+    config:
+      uri:
+      - http://localhost:9196
+      
+      
+resilience4j.circuitbreaker:
+    instances:
+        customerservice:
+            registerHealthIndicator: true
+            event-consumer-buffer-size: 10
+            automatic-transition-from-open-to-half-open-enabled: true
+            failure-rate-threshold: 50
+            minimum-number-of-calls: 5
+            sliding-window-size: 10
+            wait-duration-in-open-state: 10s
+            permittedNumberOfCallsInHalfOpenState: 3
+            slidingWindowType: TIME_BASED
+            
+            
+managemement:
+  health:
+    circuitbreakers:
+      enabled: true    
+  endpoint:
+     health:
+       enabled:true
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
+       
+            
+resilience4j.timelimiter:
+ instances:
+     deptservice:
+         timeoutDuration: 10s
+         cancelRunningFuture: true
